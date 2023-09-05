@@ -97,17 +97,16 @@ If anyone else is facing any issue then First Enabled "Firebase Cloud Messaging 
 * Now click on "Body" than select "Raw" and add value as JSON object like below
 ```
 {
-      "to":"/topics/YourTopicName", 
-      "data":
-      {
-          "title": "My Application Titile is Here",
-	        "short_desc": "My Application Short Description is here",
-	        "long_desc": "My Application Long Description is here",
-	        "icon": "App Icon link is here",
-	        "feature": "App Feature Image Link is here",
-	        "package": "Promotional app package name is here"
-      }
-  }
+    "to": "/topics/YourTopicName",
+    "data": {
+        "title": "My Application Titile is Here",
+        "short_desc": "My Application Short Description is here",
+        "long_desc": "My Application Long Description is here",
+        "icon": "https://play-lh.googleusercontent.com/_9o78ciKXmtl1gpvZBdRb1LEbnSA3ZzLNbPHBnBO2TevmKjDglIaGjVBQTwYpSUH5ak=s64-rw",
+        "feature": "https://appinventiv.com/wp-content/uploads/sites/1/2018/11/How-to-Get-Your-App-Featured-in-Play-Store-Step-by-Step-Guide.jpg",
+        "package": null // can be a package name you want users to go to google store to install eg com.tencent.ig
+    }
+}
 ```
 ### Postman Screen
 
@@ -130,6 +129,12 @@ These Three items are optional for notification
 * long_desc
 * feature
 * package (in case of other app promotion)
+
+### 📺 YouTube Channel
+
+[Visit My YouTube Channel](https://www.youtube.com/@codelytical)
+
+Check out video tutorials related to this project on my YouTube channel for more in-depth explanations and demos.
 
 
 # LICENSE
