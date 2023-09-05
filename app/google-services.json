@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "925906479890",
+    "firebase_url": "https://methodist-app-1f303-default-rtdb.firebaseio.com",
+    "project_id": "methodist-app-1f303",
+    "storage_bucket": "methodist-app-1f303.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925906479890:android:aea68db5470afae38721cb",
+        "android_client_info": {
+          "package_name": "com.codelytical.codelyticalfcm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925906479890-l1bko2gvmr6bkfanu2ncjgtdrpmc63au.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6lpgprDujfQJi27b5x4P0g7F9gv-Ub0Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925906479890-l1bko2gvmr6bkfanu2ncjgtdrpmc63au.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925906479890:android:6fbb686bb731aff78721cb",
+        "android_client_info": {
+          "package_name": "ideanity.oceans.methodistndwom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925906479890-uvljg2l1d2bebe79292ftejh97lr81oj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ideanity.oceans.methodistndwom",
+            "certificate_hash": "c7824e3f57f50757971a4a4af85ed3b7a5c706d6"
+          }
+        },
+        {
+          "client_id": "925906479890-l1bko2gvmr6bkfanu2ncjgtdrpmc63au.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6lpgprDujfQJi27b5x4P0g7F9gv-Ub0Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925906479890-l1bko2gvmr6bkfanu2ncjgtdrpmc63au.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
