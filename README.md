@@ -57,12 +57,60 @@ Finally intialize Firebase and setup FCM in application class or in your "MainAc
     LyticalFCM.setupFCM(this, "YourTopicName")
 ```
 
+### Step 5
+
+To enable notifications on Android 13 (Tiramisu) and above, you need to request the `POST_NOTIFICATIONS` permission to the AndroidManifest.xml.
+
+```
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+```
 
 ### Remove
 
 If you want to stop receiving notification from the subscribed topic simply call.
 ```
     LyticalFCM.removeFCM("YourTopicName")
+```
+
+## Permission Requirements (Android 13+)
+
+To enable notifications on Android 13 (Tiramisu) and above, you need to request the `POST_NOTIFICATIONS` permission. Here's how to do it in your `MainActivity` or `Fragment`:
+
+```
+private val requestPermissionLauncher = registerForActivityResult(
+    ActivityResultContracts.RequestPermission()
+) { isGranted: Boolean ->
+    if (isGranted) {
+        // You can now post notifications.
+    } else {
+        // Inform the user that your app will not be able to show notifications.
+    }
+}
+
+private fun askNotificationPermission() {
+    // This is only necessary for API level >= 33 (TIRAMISU)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            // You already have the permission to post notifications.
+        } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+            // You should show an explanation to the user on why your app needs this permission.
+            // You can display a dialog or a message to explain the importance of the permission.
+        } else {
+            // Request the permission from the user.
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+}
+
+```
+
+# For Activity add below to the onCreate
+```
+askNotificationPermission()
 ```
 
 # Send Data Message using the HTTP protocol with POSTMAN
