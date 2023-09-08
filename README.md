@@ -51,7 +51,18 @@ Add CodeLyticalFCM dependencies in App level build.gradle.
 
 ### Step 4
 
-Finally intialize Firebase and setup FCM in application class or in your "MainActivity"
+Finally intialize Firebase and setup FCM in application class or in your "Application or Activity if you are not using application"
+
+```
+class MyApp : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+        LyticalFCM.setupFCM(this, "YourTopicName")
+    }
+}
+```
+For Activity, inside the onCreate
 
 ```
     LyticalFCM.setupFCM(this, "YourTopicName")
@@ -111,6 +122,26 @@ private fun askNotificationPermission() {
 # For Activity add below to the onCreate
 ```
 askNotificationPermission()
+```
+
+# Getting data from notification and using it
+
+```
+val notificationData = NotificationDataHolder.getNotificationData()
+        if (notificationData != null) {
+            // You can now use the notification data in your activity
+            val title = notificationData["title"]
+            val shortDesc = notificationData["short_desc"]
+
+            Log.d("TAG", "onCreateAppCompatActivity: $title")
+
+            // Check if the notification title is "daily hymn"
+            if (title == "Daily Hymn") {
+                // Open SecondActivity
+                val intent = Intent(this, SecondActivity::class.java)
+                startActivity(intent)
+            }
+        }
 ```
 
 # Send Data Message using the HTTP protocol with POSTMAN
