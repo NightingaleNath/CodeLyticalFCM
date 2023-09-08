@@ -39,6 +39,19 @@ class LyticalFirebaseMessagingService : FirebaseMessagingService() {
             if (icon == null || title == null || shortDesc == null) {
                 return
             } else {
+                // Create a map to hold the notification data
+                val notificationData = mapOf(
+                    "icon" to icon,
+                    "title" to title,
+                    "short_desc" to shortDesc,
+                    "long_desc" to (longDesc ?: ""),
+                    "feature" to (image ?: ""),
+                    "package" to (packageName ?: ""),
+                )
+
+                // Set the notification data in the NotificationDataHolder
+                NotificationDataHolder.setNotificationData(notificationData)
+
                 Handler(this.mainLooper).post {
                     sendNotification(icon, title, shortDesc, image, longDesc, packageName)
                 }
