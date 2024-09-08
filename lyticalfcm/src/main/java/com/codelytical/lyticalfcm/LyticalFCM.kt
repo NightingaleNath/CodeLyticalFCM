@@ -1,5 +1,6 @@
 package com.codelytical.lyticalfcm
 
+import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -11,12 +12,15 @@ import kotlinx.coroutines.runBlocking
 
 class LyticalFCM {
     companion object {
-        fun setupFCM(context: Context, topic: String) {
+        fun setupFCM(context: Context, topic: String, targetActivity: Class<out Activity>) {
             runBlocking {
                 initializeFirebase(context)
                 createChannelForFCM(context)
                 Log.e("TAG", "Firebase initialization topic $topic")
                 FirebaseMessaging.getInstance().subscribeToTopic(topic)
+
+                // Store the target activity for later use
+                NotificationDataHolder.setTargetActivity(targetActivity)
             }
         }
 
@@ -50,3 +54,4 @@ class LyticalFCM {
         }
     }
 }
+

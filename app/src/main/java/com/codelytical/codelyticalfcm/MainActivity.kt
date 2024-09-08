@@ -1,15 +1,15 @@
 package com.codelytical.codelyticalfcm
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.codelytical.lyticalfcm.NotificationDataHolder
+import com.codelytical.lyticalfcm.CustomLogger
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,20 +18,22 @@ class MainActivity : AppCompatActivity() {
 
         askNotificationPermission()
 
-        val notificationData = NotificationDataHolder.getNotificationData()
-        if (notificationData != null) {
-            // You can now use the notification data in your activity
-            val title = notificationData["title"]
-            val shortDesc = notificationData["short_desc"]
+        // Display logs
+        val logs = CustomLogger.getLogs(this)
+        Log.d("TAG", "Logs: $logs")
 
-            Log.d("TAG", "onCreateAppCompatActivity: $title")
+        val intent = intent
+        val title = intent.getStringExtra("title")
+        val shortDesc = intent.getStringExtra("short_desc")
 
-            // Check if the notification title is "daily hymn"
-            if (title == "Daily Hymn") {
-                // Open SecondActivity
-                val intent = Intent(this, SecondActivity::class.java)
-                startActivity(intent)
-            }
+        Log.d("TAG", "NotificationData Title: $title")
+        Log.d("TAG", "NotificationData Short Desc: $shortDesc")
+
+        if (title == "Daily Hymn") {
+            // Open SecondActivity
+            Toast.makeText(this, "Title is $title", Toast.LENGTH_LONG).show()
+        } else {
+            Log.d("TAG", "NotificationData is null")
         }
     }
 

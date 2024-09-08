@@ -23,11 +23,9 @@ import java.util.concurrent.atomic.AtomicInteger
 class LyticalFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        // Data available
         if (remoteMessage.data.isNotEmpty()) {
             Log.d(TAG, "Message data payload: ${remoteMessage.data}")
 
-            // fetch data into variables
             val icon = remoteMessage.data["icon"]
             val title = remoteMessage.data["title"]
             val shortDesc = remoteMessage.data["short_desc"]
@@ -35,11 +33,12 @@ class LyticalFirebaseMessagingService : FirebaseMessagingService() {
             val image = remoteMessage.data["feature"]
             val packageName = remoteMessage.data["package"]
 
-            // send notification
+            // Log the received data
+            CustomLogger.log(this, "Received Notification - Icon: $icon, Title: $title, Short Desc: $shortDesc")
+
             if (icon == null || title == null || shortDesc == null) {
                 return
             } else {
-                // Create a map to hold the notification data
                 val notificationData = mapOf(
                     "icon" to icon,
                     "title" to title,
@@ -49,7 +48,8 @@ class LyticalFirebaseMessagingService : FirebaseMessagingService() {
                     "package" to (packageName ?: ""),
                 )
 
-                // Set the notification data in the NotificationDataHolder
+                CustomLogger.log(this, "Notification Data: $notificationData")
+
                 NotificationDataHolder.setNotificationData(notificationData)
 
                 Handler(this.mainLooper).post {
@@ -61,7 +61,7 @@ class LyticalFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        Log.d(TAG, "Refreshed token: $token")
+        CustomLogger.log(this, "Refreshed token: $token")
     }
 
     private fun sendNotification(
@@ -72,18 +72,19 @@ class LyticalFirebaseMessagingService : FirebaseMessagingService() {
         longDesc: String?,
         storePackage: String?,
     ) {
-        // Open PlayStore
-        val mIntent = if (storePackage != null) {
-            if (isCrossPromotionPackage(storePackage)) {
-                setStoreIntent(storePackage)
-            } else {
-                openApp(storePackage)
-            }
-        } else {
-            openApp(packageName)
+        val targetActivity = NotificationDataHolder.getTargetActivity() ?: return
+
+        CustomLogger.log(this, "Sending Notification - Icon: $icon, Title: $title, Short Desc: $shortDesc, Activity: $targetActivity")
+
+        val mIntent = Intent(this, targetActivity).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            putExtra("title", title)
+            putExtra("short_desc", shortDesc)
+            putExtra("long_desc", longDesc)
+            putExtra("feature", image)
+            putExtra("icon", icon)
         }
 
-        mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PendingIntent.getActivity(
                 this,
@@ -120,7 +121,6 @@ class LyticalFirebaseMessagingService : FirebaseMessagingService() {
         val notificationManager =
             getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
-        // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
@@ -130,11 +130,9 @@ class LyticalFirebaseMessagingService : FirebaseMessagingService() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        // Build Notification
         val notificationID = getNextInt()
         notificationManager.notify(notificationID, notificationBuilder.build())
 
-        // Set Images into remoteViews
         try {
             Picasso.get().load(icon)
                 .into(remoteViews, R.id.iv_icon, notificationID, notificationBuilder.build())
@@ -143,7 +141,8 @@ class LyticalFirebaseMessagingService : FirebaseMessagingService() {
                 Picasso.get().load(image)
                     .into(remoteViews, R.id.iv_feature, notificationID, notificationBuilder.build())
             }
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            CustomLogger.log(this, "Exception while loading images: ${e.message}")
         } catch (_: java.lang.Exception) {
         } catch (_: IllegalStateException) {
         } catch (_: IllegalArgumentException) {
@@ -174,10 +173,11 @@ class LyticalFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     companion object {
-        private const val TAG = "LyticalFirebaseMsgService"
+        private const val TAG = "LyticalFirebase"
         private val number = AtomicInteger()
         fun getNextInt(): Int {
             return number.incrementAndGet()
         }
     }
 }
+
